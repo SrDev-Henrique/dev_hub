@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
@@ -35,38 +36,42 @@ export function NavBar() {
           </Button>
         </div>
 
-        <Popover open={menuOpen} onOpenChange={setMenuOpen}>
-          <PopoverTrigger asChild>
-            <button type="button" aria-label="Menu do perfil" className="rounded-full">
-              <Avatar className="size-8">
-                <AvatarImage src={user.profile_photo_url} alt={user.username} />
-                <AvatarFallback>{user.username.slice(0, 2).toUpperCase()}</AvatarFallback>
-              </Avatar>
-            </button>
-          </PopoverTrigger>
-          {/* animation disabled: Radix's exit-animation Presence tracking gets stuck open
-              (data-state flips to "closed" but the node never unmounts) in this app; forcing
-              no animation makes Presence unmount synchronously instead of waiting on animationend. */}
-          <PopoverContent align="end" className="w-44 p-1.5" style={{ animation: "none" }}>
-            <Link
-              to={`/profile/${user.username}`}
-              onClick={() => setMenuOpen(false)}
-              className="rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent"
-            >
-              Perfil
-            </Link>
-            <Link
-              to="/settings"
-              onClick={() => setMenuOpen(false)}
-              className="rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent"
-            >
-              Configurações
-            </Link>
-            <Button variant="outline" size="sm" className="mt-1" onClick={handleLogout}>
-              Sair
-            </Button>
-          </PopoverContent>
-        </Popover>
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+
+          <Popover open={menuOpen} onOpenChange={setMenuOpen}>
+            <PopoverTrigger asChild>
+              <button type="button" aria-label="Menu do perfil" className="rounded-full">
+                <Avatar className="size-8">
+                  <AvatarImage src={user.profile_photo_url} alt={user.username} />
+                  <AvatarFallback>{user.username.slice(0, 2).toUpperCase()}</AvatarFallback>
+                </Avatar>
+              </button>
+            </PopoverTrigger>
+            {/* animation disabled: Radix's exit-animation Presence tracking gets stuck open
+                (data-state flips to "closed" but the node never unmounts) in this app; forcing
+                no animation makes Presence unmount synchronously instead of waiting on animationend. */}
+            <PopoverContent align="end" className="w-44 p-1.5" style={{ animation: "none" }}>
+              <Link
+                to={`/profile/${user.username}`}
+                onClick={() => setMenuOpen(false)}
+                className="rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent"
+              >
+                Perfil
+              </Link>
+              <Link
+                to="/settings"
+                onClick={() => setMenuOpen(false)}
+                className="rounded-md px-2 py-1.5 text-left text-sm hover:bg-accent"
+              >
+                Configurações
+              </Link>
+              <Button variant="outline" size="sm" className="mt-1" onClick={handleLogout}>
+                Sair
+              </Button>
+            </PopoverContent>
+          </Popover>
+        </div>
       </div>
     </nav>
   );
