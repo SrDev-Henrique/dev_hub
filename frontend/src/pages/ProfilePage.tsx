@@ -1,5 +1,6 @@
 import { Link, useParams } from "react-router-dom";
 
+import { CreatePostDialog } from "@/components/CreatePostDialog";
 import { FollowButton } from "@/components/FollowButton";
 import { PostCard } from "@/components/PostCard";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -62,6 +63,11 @@ export function ProfilePage() {
           <TabsTrigger value="following">Seguindo</TabsTrigger>
         </TabsList>
         <TabsContent value="posts" className="flex flex-col gap-4">
+          {isMe && (
+            <div className="flex justify-end">
+              <CreatePostDialog />
+            </div>
+          )}
           {posts?.length === 0 && <p className="text-muted-foreground">Nenhum post ainda.</p>}
           {posts?.map((post) => (
             <PostCard key={post.id} post={post} />

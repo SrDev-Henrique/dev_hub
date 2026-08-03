@@ -19,7 +19,7 @@ export function NavBar() {
     <nav className="border-b border-border">
       <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-3">
         <Link to="/" className="font-semibold">
-          Rede Social
+          Dev Hub
         </Link>
         <div className="flex items-center gap-2">
           <Button variant="ghost" size="sm" asChild>

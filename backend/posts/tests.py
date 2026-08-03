@@ -26,6 +26,12 @@ class FeedTests(APITestCase):
         self.assertIn(self.bob_post.id, ids)
         self.assertNotIn(self.carol_post.id, ids)
 
+    def test_feed_includes_own_posts(self):
+        alice_post = Post.objects.create(author=self.alice, text="oi de alice")
+        response = self.client.get(reverse("feed"))
+        ids = [p["id"] for p in response.data["results"]]
+        self.assertIn(alice_post.id, ids)
+
     def test_feed_is_paginated(self):
         for i in range(15):
             Post.objects.create(author=self.bob, text=f"post {i}")

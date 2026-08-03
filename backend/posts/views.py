@@ -1,5 +1,5 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Count
+from django.db.models import Count, Q
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, status
 from rest_framework.response import Response
@@ -25,7 +25,9 @@ class FeedView(generics.ListAPIView):
 
     def get_queryset(self):
         following_ids = Follow.objects.filter(follower=self.request.user).values_list("following_id", flat=True)
-        return annotate_counts(Post.objects.filter(author_id__in=following_ids))
+        return annotate_counts(
+            Post.objects.filter(Q(author_id__in=following_ids) | Q(author=self.request.user))
+        )
 
     def get_serializer_context(self):
         context = super().get_serializer_context()

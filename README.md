@@ -1,8 +1,8 @@
-# Rede Social — Projeto Final EBAC
+# Dev Hub — Projeto Final EBAC
 
-Projeto final do curso de back-end da EBAC: uma rede social simples com cadastro/login,
-edição de perfil, sistema de seguir usuários, feed de postagens (só de quem você segue),
-curtidas e comentários.
+Projeto final do curso de back-end da EBAC: uma rede social simples (Dev Hub) com
+cadastro/login, edição de perfil, sistema de seguir usuários, feed de postagens (de
+quem você segue e as suas próprias), curtidas e comentários.
 
 ## Stack
 
