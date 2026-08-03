@@ -25,10 +25,8 @@ export function PostCard({ post }: { post: Post }) {
 
   function handleSaveEdit() {
     if (!editText.trim()) return;
-    updatePost.mutate(
-      { id: post.id, text: editText },
-      { onSuccess: () => setIsEditing(false) }
-    );
+    setIsEditing(false);
+    updatePost.mutate({ id: post.id, text: editText });
   }
 
   return (
@@ -68,7 +66,7 @@ export function PostCard({ post }: { post: Post }) {
           <div className="flex flex-col gap-2">
             <Textarea value={editText} onChange={(e) => setEditText(e.target.value)} rows={3} />
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleSaveEdit} disabled={updatePost.isPending}>
+              <Button size="sm" onClick={handleSaveEdit}>
                 Salvar
               </Button>
               <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>

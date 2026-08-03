@@ -44,7 +44,7 @@ export function ProfilePage() {
           <h1 className="text-xl font-semibold">{profile.name || profile.username}</h1>
           <p className="text-muted-foreground">@{profile.username}</p>
         </div>
-        {!isMe && <FollowButton targetUserId={profile.id} meId={me?.id} isFollowing={isFollowing} />}
+        {!isMe && <FollowButton targetUser={profile} isFollowing={isFollowing} />}
       </div>
 
       <div className="flex gap-6 text-sm">
