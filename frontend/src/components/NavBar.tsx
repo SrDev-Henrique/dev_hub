@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/context/AuthContext";
@@ -43,6 +44,7 @@ export function NavBar() {
           <Button variant="outline" size="sm" onClick={handleLogout}>
             Sair
           </Button>
+          <ThemeToggle />
         </div>
       </div>
     </nav>
