@@ -39,3 +39,9 @@ class UserSearchView(generics.ListAPIView):
         return User.objects.filter(
             Q(username__icontains=query) | Q(name__icontains=query)
         ).exclude(id=self.request.user.id).order_by("username")
+
+
+class UserDetailView(generics.RetrieveAPIView):
+    serializer_class = UserPublicSerializer
+    queryset = User.objects.all()
+    lookup_field = "username"

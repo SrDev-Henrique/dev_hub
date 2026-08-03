@@ -1,6 +1,14 @@
 from django.urls import path
 
-from .views import CommentDetailView, CommentListCreateView, FeedView, LikeToggleView, PostCreateView, PostDetailView
+from .views import (
+    CommentDetailView,
+    CommentListCreateView,
+    FeedView,
+    LikeToggleView,
+    PostCreateView,
+    PostDetailView,
+    UserPostsView,
+)
 
 urlpatterns = [
     path("posts/feed/", FeedView.as_view(), name="feed"),
@@ -9,4 +17,5 @@ urlpatterns = [
     path("posts/<int:post_id>/like/", LikeToggleView.as_view(), name="post-like-toggle"),
     path("posts/<int:post_id>/comments/", CommentListCreateView.as_view(), name="comment-list-create"),
     path("comments/<int:pk>/", CommentDetailView.as_view(), name="comment-detail"),
+    path("users/<int:user_id>/posts/", UserPostsView.as_view(), name="user-posts"),
 ]

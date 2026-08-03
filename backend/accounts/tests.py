@@ -124,3 +124,20 @@ class UserSearchTests(APITestCase):
     def test_empty_query_returns_empty(self):
         response = self.client.get(reverse("user-search"), {"q": ""})
         self.assertEqual(response.data["results"], [])
+
+
+class UserDetailTests(APITestCase):
+    def setUp(self):
+        self.me = User.objects.create_user(username="erin", password="S3nhaForte!23")
+        self.other = User.objects.create_user(username="frank", password="S3nhaForte!23", name="Frank Sinatra")
+        self.client.force_authenticate(self.me)
+
+    def test_get_user_by_username(self):
+        response = self.client.get(reverse("user-detail", args=["frank"]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["id"], self.other.id)
+        self.assertEqual(response.data["name"], "Frank Sinatra")
+
+    def test_get_unknown_username_404(self):
+        response = self.client.get(reverse("user-detail", args=["ghost"]))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

@@ -34,6 +34,21 @@ class FeedTests(APITestCase):
         self.assertIsNotNone(response.data["next"])
 
 
+class UserPostsTests(APITestCase):
+    def setUp(self):
+        self.alice = User.objects.create_user(username="alice", password="S3nhaForte!23")
+        self.bob = User.objects.create_user(username="bob", password="S3nhaForte!23")
+        self.bob_post = Post.objects.create(author=self.bob, text="do bob")
+        self.alice_post = Post.objects.create(author=self.alice, text="da alice")
+        self.client.force_authenticate(self.alice)
+
+    def test_user_posts_only_shows_that_users_posts(self):
+        response = self.client.get(reverse("user-posts", args=[self.bob.id]))
+        ids = [p["id"] for p in response.data["results"]]
+        self.assertEqual(ids, [self.bob_post.id])
+        self.assertNotIn(self.alice_post.id, ids)
+
+
 class PostCrudTests(APITestCase):
     def setUp(self):
         self.alice = User.objects.create_user(username="alice", password="S3nhaForte!23")

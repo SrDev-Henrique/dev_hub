@@ -42,6 +42,20 @@ class PostCreateView(generics.CreateAPIView):
         serializer.save(author=self.request.user)
 
 
+class UserPostsView(generics.ListAPIView):
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        return annotate_counts(Post.objects.filter(author_id=self.kwargs["user_id"]))
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context["liked_post_ids"] = set(
+            Like.objects.filter(user=self.request.user).values_list("post_id", flat=True)
+        )
+        return context
+
+
 class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PostSerializer
     permission_classes = [IsOwnerOrReadOnly]
