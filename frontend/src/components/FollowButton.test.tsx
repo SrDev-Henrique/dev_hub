@@ -3,12 +3,15 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { FollowButton } from "@/components/FollowButton";
 import { useToggleFollow } from "@/hooks/useSocial";
+import type { PublicUser } from "@/lib/types";
 
 vi.mock("@/hooks/useSocial", () => ({
   useToggleFollow: vi.fn(),
 }));
 
 const mockedUseToggleFollow = vi.mocked(useToggleFollow);
+
+const targetUser: PublicUser = { id: 2, username: "bob", name: "Bob Builder", profile_photo_url: "" };
 
 describe("FollowButton", () => {
   const mutate = vi.fn();
@@ -22,7 +25,7 @@ describe("FollowButton", () => {
   });
 
   it('shows "Seguir" and follows when not following', () => {
-    render(<FollowButton targetUserId={2} meId={1} isFollowing={false} />);
+    render(<FollowButton targetUser={targetUser} isFollowing={false} />);
 
     const button = screen.getByRole("button", { name: "Seguir" });
     fireEvent.click(button);
@@ -31,7 +34,7 @@ describe("FollowButton", () => {
   });
 
   it('shows "Deixar de seguir" and unfollows when already following', () => {
-    render(<FollowButton targetUserId={2} meId={1} isFollowing={true} />);
+    render(<FollowButton targetUser={targetUser} isFollowing={true} />);
 
     const button = screen.getByRole("button", { name: "Deixar de seguir" });
     fireEvent.click(button);
@@ -45,7 +48,7 @@ describe("FollowButton", () => {
       isPending: true,
     } as unknown as ReturnType<typeof useToggleFollow>);
 
-    render(<FollowButton targetUserId={2} meId={1} isFollowing={false} />);
+    render(<FollowButton targetUser={targetUser} isFollowing={false} />);
 
     expect(screen.getByRole("button", { name: "Seguir" })).toBeDisabled();
   });

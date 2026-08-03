@@ -1,16 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useToggleFollow } from "@/hooks/useSocial";
+import type { PublicUser } from "@/lib/types";
 
-export function FollowButton({
-  targetUserId,
-  meId,
-  isFollowing,
-}: {
-  targetUserId: number;
-  meId: number | undefined;
-  isFollowing: boolean;
-}) {
-  const toggleFollow = useToggleFollow(targetUserId, meId);
+export function FollowButton({ targetUser, isFollowing }: { targetUser: PublicUser; isFollowing: boolean }) {
+  const toggleFollow = useToggleFollow(targetUser);
 
   return (
     <Button

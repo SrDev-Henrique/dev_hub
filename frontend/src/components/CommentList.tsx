@@ -18,7 +18,8 @@ function CommentItem({ comment, postId }: { comment: Comment; postId: number }) 
 
   function handleSave() {
     if (!text.trim()) return;
-    updateComment.mutate({ id: comment.id, text }, { onSuccess: () => setIsEditing(false) });
+    setIsEditing(false);
+    updateComment.mutate({ id: comment.id, text });
   }
 
   return (
@@ -46,7 +47,7 @@ function CommentItem({ comment, postId }: { comment: Comment; postId: number }) 
         <div className="flex flex-col gap-2">
           <Textarea value={text} onChange={(e) => setText(e.target.value)} rows={2} />
           <div className="flex gap-2">
-            <Button size="sm" onClick={handleSave} disabled={updateComment.isPending}>
+            <Button size="sm" onClick={handleSave}>
               Salvar
             </Button>
             <Button size="sm" variant="outline" onClick={() => setIsEditing(false)}>
@@ -69,7 +70,9 @@ export function CommentList({ postId }: { postId: number }) {
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!newComment.trim()) return;
-    createComment.mutate(newComment, { onSuccess: () => setNewComment("") });
+    const text = newComment;
+    setNewComment("");
+    createComment.mutate(text);
   }
 
   return (
@@ -86,7 +89,7 @@ export function CommentList({ postId }: { postId: number }) {
           rows={1}
           className="min-h-9"
         />
-        <Button type="submit" size="sm" disabled={createComment.isPending}>
+        <Button type="submit" size="sm">
           Enviar
         </Button>
       </form>
