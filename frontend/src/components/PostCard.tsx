@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { CommentList } from "@/components/CommentList";
+import { DeleteConfirmButton } from "@/components/DeleteConfirmButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -30,12 +31,6 @@ export function PostCard({ post }: { post: Post }) {
     );
   }
 
-  function handleDelete() {
-    if (confirm("Excluir este post?")) {
-      deletePost.mutate(post.id);
-    }
-  }
-
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between gap-2">
@@ -56,9 +51,15 @@ export function PostCard({ post }: { post: Post }) {
             <Button variant="ghost" size="icon-sm" onClick={() => setIsEditing(true)} aria-label="Editar post">
               <Pencil className="size-4" />
             </Button>
-            <Button variant="ghost" size="icon-sm" onClick={handleDelete} aria-label="Excluir post">
-              <Trash2 className="size-4" />
-            </Button>
+            <DeleteConfirmButton
+              title="Excluir post"
+              description="Essa ação não pode ser desfeita. O post será excluído permanentemente."
+              onConfirm={() => deletePost.mutate(post.id)}
+            >
+              <Button variant="ghost" size="icon-sm" aria-label="Excluir post">
+                <Trash2 className="size-4" />
+              </Button>
+            </DeleteConfirmButton>
           </div>
         )}
       </CardHeader>

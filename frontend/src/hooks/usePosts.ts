@@ -4,6 +4,14 @@ import { toast } from "sonner";
 import { api } from "@/lib/api";
 import type { Comment, Paginated, Post } from "@/lib/types";
 
+const POST_LIST_QUERY_KEYS = ["feed", "user-posts"];
+
+function invalidatePostLists(queryClient: ReturnType<typeof useQueryClient>) {
+  queryClient.invalidateQueries({
+    predicate: (query) => POST_LIST_QUERY_KEYS.includes(query.queryKey[0] as string),
+  });
+}
+
 export function useFeed(page: number) {
   return useQuery({
     queryKey: ["feed", page],
@@ -22,7 +30,7 @@ export function useCreatePost() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      invalidatePostLists(queryClient);
       toast.success("Post publicado!");
     },
     onError: () => toast.error("Não foi possível publicar o post."),
@@ -37,7 +45,7 @@ export function useUpdatePost() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      invalidatePostLists(queryClient);
       toast.success("Post atualizado!");
     },
     onError: () => toast.error("Não foi possível editar o post."),
@@ -51,7 +59,7 @@ export function useDeletePost() {
       await api.delete(`/posts/${id}/`);
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      invalidatePostLists(queryClient);
       toast.success("Post excluído.");
     },
     onError: () => toast.error("Não foi possível excluir o post."),
@@ -66,7 +74,7 @@ export function useToggleLike() {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      invalidatePostLists(queryClient);
     },
     onError: () => toast.error("Não foi possível curtir o post."),
   });
@@ -92,7 +100,7 @@ export function useCreateComment(postId: number) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
-      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      invalidatePostLists(queryClient);
     },
     onError: () => toast.error("Não foi possível comentar."),
   });
@@ -121,7 +129,7 @@ export function useDeleteComment(postId: number) {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["comments", postId] });
-      queryClient.invalidateQueries({ queryKey: ["feed"] });
+      invalidatePostLists(queryClient);
       toast.success("Comentário excluído.");
     },
     onError: () => toast.error("Não foi possível excluir o comentário."),

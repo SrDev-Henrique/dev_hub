@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { DeleteConfirmButton } from "@/components/DeleteConfirmButton";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/context/AuthContext";
@@ -29,13 +30,15 @@ function CommentItem({ comment, postId }: { comment: Comment; postId: number }) 
             <button type="button" className="hover:text-foreground" onClick={() => setIsEditing(true)}>
               editar
             </button>
-            <button
-              type="button"
-              className="hover:text-destructive"
-              onClick={() => confirm("Excluir comentário?") && deleteComment.mutate(comment.id)}
+            <DeleteConfirmButton
+              title="Excluir comentário"
+              description="Essa ação não pode ser desfeita."
+              onConfirm={() => deleteComment.mutate(comment.id)}
             >
-              excluir
-            </button>
+              <button type="button" className="hover:text-destructive">
+                excluir
+              </button>
+            </DeleteConfirmButton>
           </div>
         )}
       </div>
