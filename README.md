@@ -80,6 +80,12 @@ npm run dev
 Acesse `http://localhost:5173`. Por padrão ele aponta para o back-end em
 `http://localhost:8000/api` (configurável via `VITE_API_URL`).
 
+Rodar os testes (Vitest + React Testing Library):
+
+```bash
+npm run test
+```
+
 ## Variáveis de ambiente
 
 ### `backend/.env`
